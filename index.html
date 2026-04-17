@@ -3,626 +3,667 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>🎲 Казино Знаний | ЕГЭ Арена</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>🎰 CASINO ЕГЭ: Ставки на знания</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: radial-gradient(circle at 10% 30%, #0b0e1a, #03050b);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 1.5rem;
+            background: #0a0c15;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        /* главная карточка казино */
-        .casino-container {
-            max-width: 1300px;
+        /* Анимированный фон с монетами */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            background: rgba(20, 24, 38, 0.65);
-            backdrop-filter: blur(14px);
-            border-radius: 3rem;
-            border: 1px solid rgba(255, 215, 0, 0.25);
-            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 215, 0, 0.1) inset;
-            overflow: hidden;
-            transition: all 0.2s ease;
+            height: 100%;
+            background-image: radial-gradient(circle at 20% 40%, rgba(212, 175, 55, 0.08) 2%, transparent 2.5%),
+                              radial-gradient(circle at 75% 85%, rgba(212, 175, 55, 0.06) 1.5%, transparent 2%);
+            background-size: 55px 55px, 80px 80px;
+            pointer-events: none;
+            z-index: 0;
         }
 
-        /* хедер с золотом */
-        .gold-header {
-            background: linear-gradient(135deg, #1e1a2f 0%, #0f0c1a 100%);
-            padding: 1.2rem 2rem;
-            border-bottom: 2px solid #f5b042;
+        /* главный контейнер — полноэкранная прокрутка, но не "табличка" */
+        .site-wrapper {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 1.2rem 2rem;
+        }
+
+        /* карточки с неоновым свечением */
+        .glass-panel {
+            background: rgba(12, 16, 28, 0.75);
+            backdrop-filter: blur(16px);
+            border-radius: 2.5rem;
+            border: 1px solid rgba(245, 176, 66, 0.35);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 215, 0, 0.1) inset;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        /* хедер с балансом */
+        .header-gold {
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
             gap: 1rem;
+            padding: 1.2rem 2rem;
+            background: linear-gradient(115deg, #0b0e1a 0%, #13172b 100%);
+            border-bottom: 2px solid #f0b349;
+            border-radius: 2rem 2rem 1rem 1rem;
+            margin-bottom: 1.8rem;
         }
 
-        .title-section h1 {
-            font-size: 1.9rem;
+        .logo h1 {
+            font-size: 1.7rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #FFE6B0, #D4AF37);
+            background: linear-gradient(135deg, #FFE6A3, #D4AF37, #FFB347);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: -0.5px;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .title-section p {
-            color: #a9adc1;
-            font-size: 0.85rem;
-            margin-top: 4px;
-            font-weight: 500;
-        }
-
-        .balance-card {
-            background: #0c0e16;
-            border-radius: 60px;
-            padding: 0.5rem 1.4rem;
+            letter-spacing: -0.3px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            box-shadow: 0 5px 12px rgba(0,0,0,0.4);
-            border: 1px solid #f5b04240;
+            gap: 8px;
+        }
+
+        .logo p {
+            font-size: 0.75rem;
+            color: #9aa3c2;
+            margin-top: 4px;
+        }
+
+        .balance-box {
+            background: #070913;
+            border-radius: 3rem;
+            padding: 0.5rem 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.6);
+            border: 1px solid #ffd96680;
         }
 
         .balance-label {
             font-weight: 600;
-            color: #ccd6f0;
+            color: #dfe6ff;
         }
 
-        .balance-value {
+        .balance-amount {
             font-size: 2rem;
             font-weight: 800;
-            background: linear-gradient(145deg, #FFD966, #FFB347);
+            background: linear-gradient(145deg, #FFD966, #F5A623);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: 1px;
+            font-feature-settings: "tnum";
         }
 
-        .coin-icon {
+        .coin-symbol {
             font-size: 1.8rem;
-            filter: drop-shadow(0 2px 4px gold);
+            filter: drop-shadow(0 2px 3px gold);
         }
 
-        /* панель управления */
-        .control-panel {
-            padding: 1.5rem 2rem;
-            background: rgba(10, 12, 22, 0.6);
+        /* секция выбора предмета и ставки */
+        .action-row {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            gap: 1.2rem;
-            border-bottom: 1px solid #2a2e44;
+            gap: 1rem;
+            background: rgba(0, 0, 0, 0.45);
+            padding: 1rem 1.8rem;
+            border-radius: 3rem;
+            margin-bottom: 2rem;
         }
 
-        .subject-selector {
-            background: #11141f;
-            border-radius: 2rem;
-            padding: 0.25rem;
-            display: inline-flex;
-            gap: 0.3rem;
+        .subjects-scroll {
+            display: flex;
             flex-wrap: wrap;
+            gap: 0.7rem;
         }
 
-        .subj-btn {
-            background: transparent;
+        .subj-chip {
+            background: #1b1f33;
             border: none;
-            padding: 0.6rem 1.3rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 2.5rem;
             font-weight: 700;
-            font-size: 0.9rem;
-            border-radius: 2rem;
-            color: #b9c3e6;
+            font-size: 0.85rem;
+            color: #cbd5ff;
             cursor: pointer;
             transition: 0.2s;
             font-family: inherit;
+            backdrop-filter: blur(4px);
         }
 
-        .subj-btn.active {
-            background: linear-gradient(95deg, #f5b042, #e6952e);
+        .subj-chip.active {
+            background: linear-gradient(125deg, #f5b042, #e28d1c);
             color: #0f0c1a;
-            box-shadow: 0 4px 10px rgba(245,176,66,0.3);
+            box-shadow: 0 4px 12px rgba(245,176,66,0.5);
+            text-shadow: 0 0 2px rgba(0,0,0,0.2);
         }
 
-        .bet-area {
+        .bet-zone {
             display: flex;
             align-items: center;
             gap: 12px;
-            background: #0c0f1a;
-            padding: 0.3rem 1rem;
+            background: #0b0e18;
+            padding: 0.3rem 0.8rem 0.3rem 1.5rem;
             border-radius: 3rem;
         }
 
         .bet-input {
-            background: #1e2338;
+            background: #1e253f;
             border: none;
-            padding: 0.7rem 1rem;
+            padding: 0.65rem 1rem;
             border-radius: 2rem;
-            color: #ffde9c;
             font-weight: 700;
             font-size: 1rem;
-            width: 130px;
+            width: 120px;
             text-align: center;
-            outline: none;
+            color: #ffe2a4;
             font-family: monospace;
+            outline: none;
         }
 
-        .btn-primary {
-            background: radial-gradient(circle at 30% 10%, #f5b042, #c97e1a);
+        .btn-bet {
+            background: radial-gradient(ellipse at 30% 30%, #ffc857, #e69a2e);
             border: none;
-            padding: 0.7rem 1.8rem;
-            border-radius: 3rem;
+            padding: 0.65rem 1.6rem;
+            border-radius: 2.5rem;
             font-weight: 800;
-            font-size: 1rem;
-            color: #141824;
+            font-size: 0.9rem;
+            color: #151e2c;
             cursor: pointer;
-            transition: transform 0.1s, box-shadow 0.2s;
-            box-shadow: 0 5px 0 #6b3f0c;
-            font-family: inherit;
+            transition: 0.08s linear;
+            box-shadow: 0 5px 0 #8b5200;
         }
 
-        .btn-primary:active {
+        .btn-bet:active {
             transform: translateY(2px);
-            box-shadow: 0 2px 0 #6b3f0c;
+            box-shadow: 0 2px 0 #8b5200;
         }
 
-        .btn-secondary {
-            background: #2a2f47;
-            border: 1px solid #5a6080;
-            color: #f0e6d0;
-            padding: 0.5rem 1.2rem;
+        .btn-reset {
+            background: #2d2a3e;
+            border: 1px solid #f5b04260;
+            color: #ffdd99;
+        }
+
+        /* игровая арена - вопрос */
+        .question-arena {
+            background: rgba(8, 10, 20, 0.7);
+            backdrop-filter: blur(12px);
             border-radius: 2rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        /* игровая зона - вопрос */
-        .game-area {
-            padding: 2rem;
-        }
-
-        .question-card {
-            background: rgba(12, 15, 28, 0.85);
-            backdrop-filter: blur(8px);
-            border-radius: 2rem;
-            border: 1px solid #f5b04255;
             padding: 1.8rem;
-            transition: all 0.3s;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            margin: 1rem 0;
+            border: 1px solid #f5b04255;
         }
 
         .question-text {
-            font-size: 1.4rem;
-            font-weight: 600;
+            font-size: 1.3rem;
+            font-weight: 700;
             line-height: 1.4;
             margin-bottom: 1.8rem;
-            color: #FFEFCF;
-            border-left: 6px solid #f5b042;
-            padding-left: 1.2rem;
+            color: #FFF2DC;
+            border-left: 5px solid #f5b042;
+            padding-left: 1rem;
         }
 
-        .options-grid {
+        .options-wrapper {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 1rem;
-            margin-bottom: 2rem;
+            margin: 1.5rem 0;
         }
 
-        .option-item {
-            background: #191e30;
-            border-radius: 1.2rem;
-            padding: 0.8rem 1.2rem;
+        .opt-card {
+            background: #13182b;
+            border-radius: 1.3rem;
+            padding: 0.8rem 1rem;
             display: flex;
             align-items: center;
             gap: 12px;
             cursor: pointer;
             transition: all 0.2s;
-            border: 1px solid #2e3452;
+            border: 1px solid #2c3357;
         }
 
-        .option-item.selected {
-            background: linear-gradient(105deg, #2e2a4a, #1f233c);
+        .opt-card.selected {
+            background: linear-gradient(115deg, #2c2848, #1f2440);
             border-color: #f5b042;
-            box-shadow: 0 0 0 2px #f5b04260;
+            box-shadow: 0 0 0 2px rgba(245,176,66,0.6);
         }
 
-        .option-prefix {
+        .opt-letter {
             font-weight: 800;
-            background: #2f354f;
-            width: 32px;
-            height: 32px;
+            background: #252c48;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 60px;
             color: #f5b042;
+            font-size: 1.1rem;
         }
 
-        .option-text {
-            color: #e2e8ff;
+        .opt-text {
+            color: #eef3ff;
             font-weight: 500;
+            word-break: break-word;
         }
 
-        .action-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: flex-end;
-        }
-
-        .btn-answer {
-            background: #2e6b3e;
-            box-shadow: 0 4px 0 #1d4529;
+        .answer-btn {
+            background: #2d6b3c;
+            box-shadow: 0 4px 0 #1f4829;
+            margin-top: 0.5rem;
+            width: 100%;
+            max-width: 280px;
+            display: inline-block;
+            text-align: center;
+            border: none;
+            padding: 0.8rem;
+            font-weight: 800;
+            font-size: 1rem;
+            border-radius: 3rem;
             color: white;
+            cursor: pointer;
+            transition: 0.08s linear;
         }
 
-        .message-area {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            border-radius: 1.5rem;
-            background: #0a0d18;
+        .message-panel {
+            margin-top: 1.2rem;
+            padding: 0.9rem;
+            border-radius: 2rem;
+            background: #090d1a;
             text-align: center;
             font-weight: 600;
-            color: #ffe6b3;
-            transition: 0.2s;
+            color: #ffeaac;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #5f6b9b;
+            border-top: 1px solid #232842;
+            padding-top: 1.5rem;
+        }
+
+        @media (max-width: 680px) {
+            .site-wrapper {
+                padding: 0.8rem;
+            }
+            .header-gold {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .balance-box {
+                justify-content: center;
+            }
+            .action-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .subjects-scroll {
+                justify-content: center;
+            }
+            .bet-zone {
+                justify-content: space-between;
+            }
+            .question-text {
+                font-size: 1.1rem;
+            }
+            .opt-card {
+                padding: 0.7rem;
+            }
         }
 
         .disabled-btn {
-            opacity: 0.5;
-            transform: none;
+            opacity: 0.6;
             pointer-events: none;
+            filter: grayscale(0.1);
         }
 
-        .reset-balance {
-            background: #2d2a3e;
-            border-color: #6c5b7b;
+        .win-effect {
+            animation: coinFlash 0.4s ease;
         }
 
-        footer {
-            padding: 1rem 2rem;
-            text-align: center;
-            font-size: 0.7rem;
-            color: #6c729b;
-            border-top: 1px solid #22273f;
+        @keyframes coinFlash {
+            0% { text-shadow: 0 0 0 gold; transform: scale(1);}
+            50% { text-shadow: 0 0 12px gold; transform: scale(1.05);}
         }
 
-        @media (max-width: 700px) {
-            .question-text { font-size: 1.1rem; }
-            .balance-value { font-size: 1.5rem; }
-            .btn-primary { padding: 0.5rem 1.2rem; }
+        button {
+            font-family: inherit;
         }
     </style>
 </head>
 <body>
-
-<div class="casino-container">
-    <div class="gold-header">
-        <div class="title-section">
-            <h1>🎰 КАЗИНО ЗНАНИЙ <span style="font-size:1.6rem;">🎓</span></h1>
-            <p>Сделай ставку монетами — проверь свой уровень ЕГЭ!</p>
+<div class="site-wrapper">
+    <div class="glass-panel header-gold">
+        <div class="logo">
+            <h1>🎲 CASINO ЕГЭ <span>🎓</span></h1>
+            <p>Ставь монеты — докажи знания. Верный ответ = x2!</p>
         </div>
-        <div class="balance-card">
-            <span class="coin-icon">🪙</span>
-            <span class="balance-label">БАЛАНС</span>
-            <span class="balance-value" id="balanceDisplay">1000</span>
+        <div class="balance-box">
+            <span class="coin-symbol">🪙</span>
+            <span class="balance-label">БАНК</span>
+            <span class="balance-amount" id="balanceValue">1500</span>
         </div>
     </div>
 
-    <div class="control-panel">
-        <div class="subject-selector" id="subjectSelector">
-            <button data-subj="math" class="subj-btn active">📐 МАТЕМАТИКА</button>
-            <button data-subj="russian" class="subj-btn">📖 РУССКИЙ ЯЗЫК</button>
-            <button data-subj="inf" class="subj-btn">💻 ИНФОРМАТИКА</button>
+    <div class="action-row">
+        <div class="subjects-scroll" id="subjectsList">
+            <button data-subj="math_base" class="subj-chip active">📐 МАТЕМАТИКА (БАЗА)</button>
+            <button data-subj="math_prof" class="subj-chip">⚡ МАТЕМАТИКА (ПРОФИЛЬ)</button>
+            <button data-subj="russian" class="subj-chip">📖 РУССКИЙ ЯЗЫК</button>
+            <button data-subj="inf" class="subj-chip">💻 ИНФОРМАТИКА</button>
         </div>
-        <div class="bet-area">
+        <div class="bet-zone">
             <span style="color:#FFD966;">💰 СТАВКА</span>
-            <input type="number" id="betAmount" class="bet-input" value="50" min="1" step="10">
-            <button id="placeBetBtn" class="btn-primary">🎲 СДЕЛАТЬ СТАВКУ</button>
-            <button id="resetBalanceBtn" class="btn-secondary reset-balance">🔄 СБРОС</button>
+            <input type="number" id="betAmount" class="bet-input" value="80" min="10" step="10">
+            <button id="placeBetAction" class="btn-bet">🎲 КРУТИТЬ ВОПРОС</button>
+            <button id="resetBalanceBtn" class="btn-bet btn-reset">🔄 СБРОС</button>
         </div>
     </div>
 
-    <div class="game-area">
-        <div class="question-card" id="questionCard" style="display: none;">
-            <div class="question-text" id="questionText">Загрузка вопроса...</div>
-            <div class="options-grid" id="optionsContainer"></div>
-            <div class="action-buttons">
-                <button id="submitAnswerBtn" class="btn-primary btn-answer">✅ ОТВЕТИТЬ</button>
-            </div>
-        </div>
-        <div id="infoMessage" class="message-area">
-            ✨ Выбери предмет, сделай ставку и ответь на вопрос из ЕГЭ! При правильном ответе выигрыш x2 ✨
+    <div id="gameContainer" class="question-arena" style="display: none;">
+        <div class="question-text" id="questionText">Загрузка вопроса...</div>
+        <div class="options-wrapper" id="optionsList"></div>
+        <div style="display: flex; justify-content: flex-end;">
+            <button id="submitAnswer" class="answer-btn">✅ ОТВЕТИТЬ И ЗАБРАТЬ ВЫИГРЫШ</button>
         </div>
     </div>
-    <footer>
-        🎓 Вопросы в стиле ЕГЭ | Виртуальные монеты | Рискни, чтобы умножить капитал!
-    </footer>
+
+    <div id="infoMsg" class="message-panel">
+        🎰 ВЫБЕРИ ПРЕДМЕТ, СДЕЛАЙ СТАВКУ И ОТВЕТЬ НА ВОПРОС ЕГЭ! ПРАВИЛЬНЫЙ ОТВЕТ = x2 СТАВКИ
+    </div>
+    <div class="footer">
+        ⚡ Виртуальные монеты · Рискни эрудицией · Вопросы из открытого банка ЕГЭ
+    </div>
 </div>
 
 <script>
-    // ---------- БАЗА ВОПРОСОВ ЕГЭ (по предметам) ----------
-    const QUESTIONS_DB = {
-        math: [
-            { text: "Решите уравнение: log₂ 8 + log₃ 9", options: ["5", "4", "6", "3"], correct: 0 },
-            { text: "Найдите корень уравнения: 3ˣ⁻² = 9", options: ["2", "3", "4", "5"], correct: 2 },
-            { text: "Найдите производную функции f(x) = x³", options: ["3x²", "x²", "3x", "2x²"], correct: 0 },
-            { text: "В прямоугольном треугольнике ABC ∠C=90°, AB=10, AC=6. Найдите BC.", options: ["8", "4", "6", "10"], correct: 0 },
-            { text: "Решите неравенство: 2x - 5 > 3", options: ["x > 4", "x > 1", "x < 4", "x < 1"], correct: 0 },
-            { text: "Вычислите: sin 30° + cos 60°", options: ["1", "0.5", "1.5", "0"], correct: 0 },
-            { text: "Найдите значение выражения 5! / 3!", options: ["20", "15", "30", "10"], correct: 0 }
+    // -------------------------- БОЛЬШАЯ БАЗА ВОПРОСОВ ЕГЭ --------------------------
+    const QUESTIONS_BANK = {
+        math_base: [   // базовая математика
+            { text: "Найдите значение выражения: 4/5 + 3/10", options: ["0,9", "1,1", "0,8", "1,2"], correct: 1 },
+            { text: "Расположите числа в порядке возрастания: 0,3; 0,33; 1/3", options: ["0,3; 0,33; 1/3", "1/3; 0,33; 0,3", "0,33; 0,3; 1/3", "0,3; 1/3; 0,33"], correct: 0 },
+            { text: "В магазине скидка 20% на товар. Цена после скидки — 800 руб. Найдите исходную цену.", options: ["1000 руб", "960 руб", "900 руб", "1100 руб"], correct: 0 },
+            { text: "Решите уравнение: 3x - 7 = 14", options: ["7", "5", "8", "6"], correct: 0 },
+            { text: "В треугольнике два угла равны 45° и 90°. Найдите третий угол.", options: ["45°", "60°", "30°", "50°"], correct: 0 },
+            { text: "Площадь квадрата 64 см². Чему равен периметр?", options: ["32 см", "24 см", "36 см", "28 см"], correct: 0 },
+            { text: "Какое число является корнем уравнения 2ˣ = 16?", options: ["4", "3", "5", "2"], correct: 0 },
+            { text: "Найдите среднее арифметическое чисел: 12, 15, 18", options: ["15", "16", "14", "17"], correct: 0 },
+            { text: "Сколько целых чисел расположено между √9 и √49?", options: ["3", "4", "5", "6"], correct: 1 },
+            { text: "В цилиндре радиус основания 2, высота 5. Найдите объём (π≈3).", options: ["60", "30", "45", "75"], correct: 0 },
+            { text: "Найдите sin 60°", options: ["√3/2", "1/2", "√2/2", "1"], correct: 0 },
+            { text: "Если число увеличили на 25%, получили 100. Найти исходное число.", options: ["80", "75", "85", "90"], correct: 0 }
+        ],
+        math_prof: [   // профильная математика (более сложные)
+            { text: "Найдите производную функции f(x) = x²·ln x", options: ["2x ln x + x", "2x ln x", "x(2 ln x + 1)", "x ln x + x"], correct: 2 },
+            { text: "Решите уравнение: 2^(x+1) = 8", options: ["2", "3", "1", "4"], correct: 0 },
+            { text: "Найдите значение выражения: log₃ 81 + log₂ 16", options: ["8", "7", "9", "10"], correct: 0 },
+            { text: "Найдите наибольшее значение функции y = -x² + 4x - 1 на отрезке [0,3]", options: ["3", "2", "4", "1"], correct: 0 },
+            { text: "Векторы a(2; -3) и b(-4; 6) являются ...", options: ["коллинеарными", "перпендикулярными", "сонаправленными", "противоположными"], correct: 0 },
+            { text: "В прямоугольном треугольнике катеты 6 и 8. Найдите гипотенузу.", options: ["10", "14", "12", "9"], correct: 0 },
+            { text: "Решите неравенство: (x-2)(x+3) > 0", options: ["(-∞;-3)∪(2;∞)", "(-3;2)", "(-∞;2)", "(2;∞)"], correct: 0 },
+            { text: "Найдите корень уравнения: √(3x-2) = 4", options: ["6", "4", "5", "7"], correct: 0 },
+            { text: "Тригонометрическое уравнение: sin x = 1/2, найдите наименьший положительный корень", options: ["π/6", "π/3", "π/2", "π"], correct: 0 },
+            { text: "Первый член арифметической прогрессии 5, разность 3. Найдите сумму первых 10 членов.", options: ["185", "190", "180", "195"], correct: 0 },
+            { text: "Найдите площадь фигуры, ограниченной линиями y = x², y = 0, x = 2", options: ["8/3", "4", "6", "2"], correct: 0 }
         ],
         russian: [
-            { text: "В каком слове верно выделена буква, обозначающая ударный гласный звук?", options: ["квАртал", "красИвее", "слИвовый", "зАгнутый"], correct: 1 },
-            { text: "В каком слове пишется НН?", options: ["юный", "ветреный", "оловянный", "свиной"], correct: 2 },
-            { text: "Укажите пример с грамматической ошибкой", options: ["оплатить проезд", "по окончании школы", "более красивее", "согласно приказу"], correct: 2 },
-            { text: "В каком варианте лексическая сочетаемость нарушена?", options: ["одержать победу", "потерпеть поражение", "одержать успех", "добиться успеха"], correct: 2 },
-            { text: "Укажите слово, в котором на месте пропуска пишется И:", options: ["пр_бывать в городе", "пр_одолеть", "пр_зидент", "пр_грамма"], correct: 2 },
-            { text: "Какое средство выразительности использовано: 'Седая ночь'?", options: ["метафора", "эпитет", "олицетворение", "сравнение"], correct: 1 }
+            { text: "В каком слове верно выделена буква, обозначающая ударный гласный звук?", options: ["нАчать", "красИвее", "звонИт", "кУхонный"], correct: 1 },
+            { text: "В каком слове на месте пропуска пишется две НН?", options: ["юн_ый", "серебр_ый", "стекл_ый", "песчан_ый"], correct: 2 },
+            { text: "Укажите пример с ошибкой в образовании формы слова:", options: ["пара туфель", "более красивее", "пять килограммов", "лягте на пол"], correct: 1 },
+            { text: "В каком ряду во всех словах пропущена безударная проверяемая гласная корня?", options: ["с_деть (на стуле), обл_котиться, раздр_жать", "пол_скать, выр_стить, зам_рать", "приг_реть, к_сание, г_релка", "уд_вительный, просл_влять, отв_рить"], correct: 3 },
+            { text: "Какое средство выразительности: «Лёгкий ветерок играл с листвой»", options: ["олицетворение", "метафора", "эпитет", "сравнение"], correct: 0 },
+            { text: "В каком предложении нужно поставить ОДНУ запятую?", options: ["Он вышел из дома и направился к реке и остановился.", "Ветер то затихал то снова налетал.", "Я позвонил другу и брату и сестре.", "Солнце светило но было прохладно."], correct: 1 },
+            { text: "Укажите слово с чередующейся гласной в корне:", options: ["выросли", "гористый", "водитель", "полевой"], correct: 0 },
+            { text: "В каком варианте оба слова пишутся слитно?", options: ["(пол)листа, (кое)кто", "(по)немногу, (в)виду болезни", "(северо)восток, (ярко)красный", "(в)течение часа, (в)следствие непогоды"], correct: 1 }
         ],
         inf: [
-            { text: "Сколько единиц в двоичной записи числа 25?", options: ["3", "2", "4", "5"], correct: 0 },
-            { text: "Для какого числа ложно выражение: (x > 10) ИЛИ НЕ (x чётное)?", options: ["8", "12", "15", "6"], correct: 0 },
-            { text: "Чему равна переменная a после алгоритма: a:=1; b:=2; a:=a+b; b:=a-b; a:=a-b;", options: ["1", "2", "3", "-1"], correct: 1 },
-            { text: "Переведите 101₂ в десятичную систему", options: ["5", "6", "4", "3"], correct: 0 },
-            { text: "Наибольшее целое x, для которого истинно (x<8) И (x>5)", options: ["7", "6", "5", "8"], correct: 0 },
-            { text: "Что будет выведено? print(2 ** 3 ** 2)", options: ["512", "64", "128", "256"], correct: 0 }
+            { text: "Сколько единиц в двоичной записи числа 123?", options: ["5", "4", "6", "3"], correct: 2 },
+            { text: "Для какого числа X ложно: (X>5) ИЛИ НЕ (X<8)?", options: ["6", "7", "8", "4"], correct: 2 },
+            { text: "Чему равно 11101₂ + 101₂?", options: ["100010₂", "100001₂", "11110₂", "11001₂"], correct: 0 },
+            { text: "Что будет выведено? a=3; b=5; a,b = b,a; print(a,b)", options: ["5 3", "3 5", "5 5", "3 3"], correct: 0 },
+            { text: "Дан фрагмент: s=0; for i in range(1,5): s+=i; print(s)", options: ["10", "6", "15", "5"], correct: 0 },
+            { text: "Логическая схема И-НЕ выдаёт 0, если...", options: ["оба входа 1", "оба входа 0", "хотя бы один 0", "входы различны"], correct: 0 },
+            { text: "Переведите число 45₁₀ в шестнадцатеричную систему", options: ["2D", "2E", "3C", "2F"], correct: 0 },
+            { text: "Для какого слова истинно: (первая буква гласная) И НЕ(последняя буква согласная)?", options: ["Арбуз", "Окно", "Игла", "Утюг"], correct: 2 },
+            { text: "Сколько Кбайт в 2²⁴ битах?", options: ["2048", "1024", "4096", "512"], correct: 0 }
         ]
     };
 
-    // Состояние игры
-    let balance = 1000;
-    let currentSubject = "math";     // math / russian / inf
+    // Состояние приложения
+    let balance = 1500;
+    let currentSubject = "math_base";
+    let activeGame = false;      // активна ли игра (ставка сделана, ждём ответ)
     let currentBet = 0;
-    let currentQuestionObj = null;
-    let isGameActive = false;         // ожидание ответа после ставки
-    let selectedOptionIndex = null;
+    let currentQuestion = null;
+    let selectedOptionIdx = null;
 
     // DOM элементы
-    const balanceSpan = document.getElementById("balanceDisplay");
+    const balanceSpan = document.getElementById("balanceValue");
     const betInput = document.getElementById("betAmount");
-    const placeBetBtn = document.getElementById("placeBetBtn");
-    const resetBalanceBtn = document.getElementById("resetBalanceBtn");
-    const questionCard = document.getElementById("questionCard");
+    const placeBtn = document.getElementById("placeBetAction");
+    const resetBtn = document.getElementById("resetBalanceBtn");
+    const gameContainer = document.getElementById("gameContainer");
     const questionTextSpan = document.getElementById("questionText");
-    const optionsContainer = document.getElementById("optionsContainer");
-    const submitAnswerBtn = document.getElementById("submitAnswerBtn");
-    const infoMessageDiv = document.getElementById("infoMessage");
-    const subjectBtns = document.querySelectorAll(".subj-btn");
+    const optionsListDiv = document.getElementById("optionsList");
+    const submitAnswerBtn = document.getElementById("submitAnswer");
+    const infoMsgDiv = document.getElementById("infoMsg");
+    const subjectBtns = document.querySelectorAll(".subj-chip");
 
-    // Вспомогательные функции
+    // Обновление баланса на UI
     function updateBalanceUI() {
         balanceSpan.innerText = Math.floor(balance);
+        if (balance <= 0) {
+            infoMsgDiv.innerHTML = "💀 БАНКРОТ! Нажми 'СБРОС', чтобы получить 1500 монет и продолжить игру 💀";
+            infoMsgDiv.style.background = "#2f1a24";
+        }
     }
 
     function showMessage(text, isError = false) {
-        infoMessageDiv.innerHTML = isError ? `⚠️ ${text}` : `🎉 ${text}`;
-        infoMessageDiv.style.background = isError ? "#2a1a1f" : "#0e231c";
-        infoMessageDiv.style.borderLeft = isError ? "4px solid #e34d4d" : "4px solid #f5b042";
+        infoMsgDiv.innerHTML = isError ? `⚠️ ${text}` : `✨ ${text}`;
+        infoMsgDiv.style.background = isError ? "#26161e" : "#0c1f1a";
+        infoMsgDiv.style.borderLeft = isError ? "4px solid #f57c5c" : "4px solid #f5b042";
         setTimeout(() => {
-            if (infoMessageDiv.innerHTML.includes(text)) {
-                if(!isGameActive) infoMessageDiv.innerHTML = "✨ Сделайте новую ставку, чтобы проверить знания ✨";
-                else infoMessageDiv.innerHTML = "🎲 Ставка принята! Выберите ответ и нажмите 'ОТВЕТИТЬ'";
+            if (infoMsgDiv.innerHTML === `⚠️ ${text}` || infoMsgDiv.innerHTML === `✨ ${text}`) {
+                if (!activeGame) infoMsgDiv.innerHTML = "🎰 Сделайте новую ставку на вопрос ЕГЭ! Выберите предмет.";
+                else infoMsgDiv.innerHTML = "🎲 Ставка принята! Ждём правильный ответ...";
             }
-        }, 2500);
+        }, 2800);
     }
 
-    // Сброс активной игры с возвратом ставки (если игра активна и не отвечена)
-    function cancelActiveGame(returnBet = true) {
-        if (isGameActive && returnBet && currentBet > 0) {
-            balance += currentBet;
-            updateBalanceUI();
-            showMessage(`Ставка ${currentBet} монет возвращена. Игра отменена.`, false);
-        }
-        isGameActive = false;
-        currentBet = 0;
-        selectedOptionIndex = null;
-        questionCard.style.display = "none";
-        // чистим контейнер вариантов
-        optionsContainer.innerHTML = "";
-        // убираем выделение
-        if(submitAnswerBtn) submitAnswerBtn.disabled = false;
-        // делаем кнопку ставки активной
-        placeBetBtn.disabled = false;
+    // Получить случайный вопрос из текущей категории
+    function fetchRandomQuestion() {
+        const bank = QUESTIONS_BANK[currentSubject];
+        if (!bank || bank.length === 0) return null;
+        const idx = Math.floor(Math.random() * bank.length);
+        return { ...bank[idx] };
     }
 
-    // Получить случайный вопрос по предмету
-    function getRandomQuestion(subject) {
-        const questionsArray = QUESTIONS_DB[subject];
-        if (!questionsArray || questionsArray.length === 0) return null;
-        const randomIndex = Math.floor(Math.random() * questionsArray.length);
-        return { ...questionsArray[randomIndex] };
-    }
-
-    // Отобразить текущий вопрос и варианты
-    function renderQuestion(questionObj) {
-        questionTextSpan.innerText = questionObj.text;
-        optionsContainer.innerHTML = "";
-        selectedOptionIndex = null;
-
-        questionObj.options.forEach((opt, idx) => {
-            const optionDiv = document.createElement("div");
-            optionDiv.classList.add("option-item");
-            const prefixLetter = String.fromCharCode(65 + idx); // A,B,C,D
-            optionDiv.innerHTML = `
-                <div class="option-prefix">${prefixLetter}</div>
-                <div class="option-text">${opt}</div>
+    // отрисовка вопроса
+    function renderQuestion(question) {
+        questionTextSpan.innerText = question.text;
+        optionsListDiv.innerHTML = "";
+        selectedOptionIdx = null;
+        question.options.forEach((opt, idx) => {
+            const letter = String.fromCharCode(65 + idx);
+            const optDiv = document.createElement("div");
+            optDiv.classList.add("opt-card");
+            optDiv.innerHTML = `
+                <div class="opt-letter">${letter}</div>
+                <div class="opt-text">${opt}</div>
             `;
-            optionDiv.addEventListener("click", () => {
-                // Убрать выделение со всех
-                document.querySelectorAll(".option-item").forEach(el => el.classList.remove("selected"));
-                optionDiv.classList.add("selected");
-                selectedOptionIndex = idx;
+            optDiv.addEventListener("click", () => {
+                document.querySelectorAll(".opt-card").forEach(c => c.classList.remove("selected"));
+                optDiv.classList.add("selected");
+                selectedOptionIdx = idx;
             });
-            optionsContainer.appendChild(optionDiv);
+            optionsListDiv.appendChild(optDiv);
         });
-        questionCard.style.display = "block";
+        gameContainer.style.display = "block";
     }
 
-    // Начать игру: списать ставку, показать вопрос
-    function startGameWithBet() {
-        // проверка: если активна игра, нельзя повторно ставить
-        if (isGameActive) {
-            showMessage("Сначала ответьте на текущий вопрос или отмените игру (смените предмет)", true);
-            return false;
+    // Начать игру: списать ставку и показать вопрос
+    function startGame() {
+        if (activeGame) {
+            showMessage("Сначала ответь на текущий вопрос!", true);
+            return;
         }
-
-        let betAmount = parseInt(betInput.value);
-        if (isNaN(betAmount) || betAmount <= 0) {
-            showMessage("Введите корректную ставку (больше 0)", true);
-            return false;
+        let bet = parseInt(betInput.value);
+        if (isNaN(bet) || bet <= 0) {
+            showMessage("Ставка должна быть положительным числом", true);
+            return;
         }
-        if (betAmount > balance) {
-            showMessage(`Недостаточно монет! Твой баланс: ${balance} 🪙`, true);
-            return false;
+        if (bet > balance) {
+            showMessage(`Не хватает монет! Твой баланс: ${balance} 🪙`, true);
+            return;
         }
-
-        // Выбираем свежий вопрос по текущему предмету
-        const newQuestion = getRandomQuestion(currentSubject);
+        const newQuestion = fetchRandomQuestion();
         if (!newQuestion) {
-            showMessage("Ошибка: нет вопросов по данному предмету", true);
-            return false;
+            showMessage("Ошибка: вопросы для этого предмета не найдены", true);
+            return;
         }
-
         // Списать ставку
-        balance -= betAmount;
+        balance -= bet;
         updateBalanceUI();
-        currentBet = betAmount;
-        currentQuestionObj = newQuestion;
-        isGameActive = true;
-        selectedOptionIndex = null;
-
-        // Отображаем карточку вопроса
-        renderQuestion(currentQuestionObj);
-        showMessage(`Ставка ${betAmount} 🪙 сделана! Ответь правильно и получишь x2!`, false);
-        placeBetBtn.disabled = false; // можно сделать, но кнопка ставки активна, но не даст повторную из-за isGameActive
-        return true;
+        currentBet = bet;
+        currentQuestion = newQuestion;
+        activeGame = true;
+        selectedOptionIdx = null;
+        renderQuestion(currentQuestion);
+        showMessage(`Ставка ${bet} 🪙 принята! Ответь верно и получишь ${bet * 2} 🪙`, false);
     }
 
     // Обработка ответа
     function handleAnswer() {
-        if (!isGameActive) {
-            showMessage("Нет активной игры. Сделайте ставку, чтобы ответить на вопрос!", true);
+        if (!activeGame) {
+            showMessage("Нет активной игры. Сделайте ставку!", true);
             return;
         }
-        if (selectedOptionIndex === null) {
-            showMessage("Выбери вариант ответа!", true);
+        if (selectedOptionIdx === null) {
+            showMessage("Выбери один из вариантов ответа!", true);
             return;
         }
-
-        const isCorrect = (selectedOptionIndex === currentQuestionObj.correct);
-        let winAmount = 0;
+        const isCorrect = (selectedOptionIdx === currentQuestion.correct);
         if (isCorrect) {
-            winAmount = currentBet * 2;   // выигрыш = ставка * 2 (чистый профит + возврат ставки)
-            balance += winAmount;
+            const win = currentBet * 2;
+            balance += win;
             updateBalanceUI();
-            showMessage(`✅ АБСОЛЮТНО ВЕРНО! Ты выиграл ${winAmount} 🪙. Баланс: ${balance}`, false);
+            showMessage(`✅ ИДЕАЛЬНО! +${win} 🪙 (Баланс: ${balance})`, false);
+            // анимация баланса
+            const balSpan = document.querySelector(".balance-amount");
+            balSpan.classList.add("win-effect");
+            setTimeout(() => balSpan.classList.remove("win-effect"), 400);
         } else {
-            // ставка уже списана, дополнительно не списываем
-            const correctAnswerLetter = String.fromCharCode(65 + currentQuestionObj.correct);
-            const correctAnswerText = currentQuestionObj.options[currentQuestionObj.correct];
-            showMessage(`❌ НЕВЕРНО! Правильный ответ: ${correctAnswerLetter}. ${correctAnswerText}. Ты потерял ${currentBet} 🪙.`, true);
+            const correctLetter = String.fromCharCode(65 + currentQuestion.correct);
+            const correctAnswer = currentQuestion.options[currentQuestion.correct];
+            showMessage(`❌ ОШИБКА! Правильный ответ: ${correctLetter}. ${correctAnswer}. Вы проиграли ${currentBet} 🪙`, true);
+            if (balance <= 0) updateBalanceUI();
         }
-
-        // Игра завершена
-        isGameActive = false;
+        // завершение игры
+        activeGame = false;
         currentBet = 0;
-        questionCard.style.display = "none";
-        optionsContainer.innerHTML = "";
-        selectedOptionIndex = null;
-        // Доп. сообщение о том, что можно делать новую ставку
-        setTimeout(() => {
-            if (!isGameActive) {
-                infoMessageDiv.innerHTML = "🎲 Готов продолжить? Сделай новую ставку и выбери предмет!";
-                infoMessageDiv.style.background = "#0a0d18";
-            }
-        }, 1800);
-    }
-
-    // Сброс баланса до 1000
-    function resetBalance() {
-        if (isGameActive) {
-            if (confirm("Сброс баланса отменит текущую игру. Ставка будет возвращена. Продолжить?")) {
-                cancelActiveGame(true);
-                balance = 1000;
-                updateBalanceUI();
-                showMessage("Баланс восстановлен до 1000 монет!", false);
-            }
-        } else {
-            balance = 1000;
-            updateBalanceUI();
-            showMessage("Баланс восстановлен до 1000 монет!", false);
+        gameContainer.style.display = "none";
+        selectedOptionIdx = null;
+        currentQuestion = null;
+        // если баланс 0, напомним про сброс
+        if (balance <= 0) {
+            showMessage("Вы обанкротились! Используйте кнопку СБРОС", true);
         }
     }
 
-    // Смена предмета с подтверждением, если активна игра
-    function setSubject(subjectKey) {
-        if (isGameActive) {
-            const userConfirm = confirm(`Внимание! Смена предмета отменит текущую игру и вернёт ставку ${currentBet} монет. Продолжить?`);
-            if (!userConfirm) return;
-            cancelActiveGame(true);
+    // Сброс баланса и отмена текущей игры (если активна)
+    function resetBalanceAndGame() {
+        if (activeGame) {
+            if (confirm("Сброс баланса отменит текущую игру и вернёт ставку. Продолжить?")) {
+                if (currentBet > 0) balance += currentBet;
+                activeGame = false;
+                currentBet = 0;
+                gameContainer.style.display = "none";
+                balance = 1500;
+                updateBalanceUI();
+                showMessage("Баланс восстановлен до 1500 🪙, игра сброшена", false);
+            }
+        } else {
+            balance = 1500;
+            updateBalanceUI();
+            showMessage("Баланс восстановлен до 1500 монет!", false);
+        }
+    }
+
+    // Смена предмета с очисткой активной игры
+    function switchSubject(subjectKey) {
+        if (activeGame) {
+            const confirmChange = confirm(`Смена предмета отменит текущую игру и вернёт ставку ${currentBet} монет. Продолжить?`);
+            if (!confirmChange) return;
+            if (currentBet > 0) {
+                balance += currentBet;
+                updateBalanceUI();
+            }
+            activeGame = false;
+            currentBet = 0;
+            gameContainer.style.display = "none";
         }
         currentSubject = subjectKey;
-        // Обновить активный класс кнопок
         subjectBtns.forEach(btn => {
-            if (btn.dataset.subj === subjectKey) {
-                btn.classList.add("active");
-            } else {
-                btn.classList.remove("active");
-            }
+            if (btn.dataset.subj === subjectKey) btn.classList.add("active");
+            else btn.classList.remove("active");
         });
-        showMessage(`Предмет изменён на ${getSubjectName(subjectKey)}. Сделайте новую ставку!`, false);
-        // Скрыть карточку вопроса, если отображается
-        questionCard.style.display = "none";
-        optionsContainer.innerHTML = "";
-        selectedOptionIndex = null;
+        let subjName = "";
+        if (subjectKey === "math_base") subjName = "МАТЕМАТИКА (БАЗА)";
+        else if (subjectKey === "math_prof") subjName = "МАТЕМАТИКА (ПРОФИЛЬ)";
+        else if (subjectKey === "russian") subjName = "РУССКИЙ ЯЗЫК";
+        else subjName = "ИНФОРМАТИКА";
+        showMessage(`Предмет изменён: ${subjName}. Сделай новую ставку!`, false);
     }
 
-    function getSubjectName(key) {
-        if (key === "math") return "МАТЕМАТИКА (профиль)";
-        if (key === "russian") return "РУССКИЙ ЯЗЫК";
-        return "ИНФОРМАТИКА";
-    }
-
-    // Слушатели событий
-    placeBetBtn.addEventListener("click", startGameWithBet);
-    submitAnswerBtn.addEventListener("click", handleAnswer);
-    resetBalanceBtn.addEventListener("click", resetBalance);
-
+    // Навесить обработчики на кнопки предметов
     subjectBtns.forEach(btn => {
         btn.addEventListener("click", (e) => {
             const subj = btn.dataset.subj;
-            if (subj === "math") setSubject("math");
-            else if (subj === "russian") setSubject("russian");
-            else if (subj === "inf") setSubject("inf");
+            switchSubject(subj);
         });
     });
 
-    // Дополнительная проверка: если ввод ставки не число, то ставим минимум
+    placeBtn.addEventListener("click", startGame);
+    submitAnswerBtn.addEventListener("click", handleAnswer);
+    resetBtn.addEventListener("click", resetBalanceAndGame);
     betInput.addEventListener("change", () => {
         let val = parseInt(betInput.value);
-        if (isNaN(val) || val < 1) betInput.value = 10;
-        if (val > balance && !isGameActive) betInput.value = Math.min(balance, val);
+        if (isNaN(val) || val < 10) betInput.value = 10;
+        if (val > balance && !activeGame) betInput.value = Math.min(balance, val);
     });
 
-    // Инициализация интерфейса (скрыть вопрос, начальный баланс)
+    // начальное состояние
     updateBalanceUI();
-    questionCard.style.display = "none";
-    showMessage("🎓 Выбери предмет ЕГЭ, сделай ставку и докажи, что ты готов к экзамену! Выигрыш x2", false);
+    gameContainer.style.display = "none";
+    showMessage("📚 ВЫБЕРИ ПРЕДМЕТ ЕГЭ, СТАВКА x2 ЗА ВЕРНЫЙ ОТВЕТ. УДАЧИ!", false);
 </script>
 </body>
 </html>
